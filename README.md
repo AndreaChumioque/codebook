@@ -1,4 +1,8 @@
-# PRODUCTO FINAL - SPRINT 3
+# Codebook
+
+Codebook es la red de egresadas de Laboratoria, creada para que nuestras usuarias pueden mantenerse en contacto y compartir las últimas tendencias en tecnología.
+
+![](https://fotos.subefotos.com/f48e4f6cc38f78c57f5dcbf38e6cee26o.png)
 
 ## Crea tu Propia Red Social
 
@@ -20,17 +24,15 @@ Para la planificación de las tareas a realizar optamos por utilizar Trello.
 
 ## Vistas del proyecto
 
-A continuación, las vistas del producto entregado:
+A continuación, las vistas del producto entregado, las cuales se desarrollaron de forma responsive.
 
-![Sin titulo](assets/docs/vista-splash.png)
+![Sin titulo](assets/docs/splash-mobile.png)
 
 ![Sin titulo](assets/docs/login-view.JPG)
 
-![Sin titulo](assets/docs/register-view.JPG)
+![Sin titulo](assets/docs/home-desktop.png)
 
-![Sin titulo](assets/docs/vista-home.png)
-
-![Sin titulo](assets/docs/vista-profile.png)
+![Sin titulo](assets/docs/profile-mobile.png)
 
 ## Herramientas utilizadas
 
@@ -42,8 +44,8 @@ Sobre los conocimientos adquiridos puestos en práctica:
 
 3. Empleamos **Firebase** para la autenticación de usuarios.
 
-## Integrantes
+## Desarrolladoras
 
-[Andrea Chumioque](https://github.com/andrea-isabel)
+[Andrea Chumioque](https://github.com/andreachumioque)
 
 [Lucero Hospina](https://github.com/lucerohospina)
