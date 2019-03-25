@@ -102,13 +102,11 @@ $(document).ready(function() {
     var $emailReg = $emailInput.val();
     var $passwordReg = $passwordInput.val();
   
-    console.log($emailReg);
-    console.log($passwordReg);
-
-    // Registro de Usuario (NUEVO) con FIREBASE
+    // Registro de Usuario (NUEVO) con email FIREBASE
     firebase.auth().createUserWithEmailAndPassword($emailReg, $passwordReg)
       .then(function(user) {
         var username = $nameInput.val() + ' ' + $lastInput.val();    
+        console.log(user);
         return user.updateProfile({
           displayName: username,
           photoURL: 'https://firebasestorage.googleapis.com/v0/b/codebook-cd8c9.appspot.com/o/postedImages%2Fdefault.jpg?alt=media&token=5897a927-f9b6-4ded-9331-0dc8032ae325'
@@ -118,7 +116,7 @@ $(document).ready(function() {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // ...
+        console.error(`${errorCode}: ${errorMessage}`);
       });
 
     firebase.auth().onAuthStateChanged(function(user) {

@@ -204,7 +204,8 @@ iframe {
 
 .btn-yellowLab {
   background-color: var(--yellowLab);
-  color: #fff;;
+  color: #fff;
+  cursor: pointer;
 }
 
 .btn-yellowLab:hover {
@@ -215,12 +216,19 @@ iframe {
 .btn-grayLab {
   background-color: var(--grayLab);
   color: #fff;
+  cursor: pointer;
+}
+
+.btn-grayLab:hover {
+  background-color: var(--yellowLab);
+  color: #fff;
 }
 
 .btn-whiteLab {
   background-color: #fff;
   color: var(--grayLab);
   border: 1px solid var(--yellowLab);
+  cursor: pointer;
 }
 
 .btn-whiteLab:hover {

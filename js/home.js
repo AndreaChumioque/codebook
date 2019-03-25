@@ -26,23 +26,23 @@ $(document).ready(function() {
   // Agregar una imagen a Firebase Storage
   function selectImage(event) {
     var selectedFile = $(event.target).get(0).files[0];
-    console.log(selectedFile.name);
+    console.info(selectedFile.name);
 
     var storageRef = firebase.storage().ref('postedImages/' + selectedFile.name);
     var uploadTask = storageRef.put(selectedFile);
 
     uploadTask.on('state_changed', function(snapshot) {
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
+      console.info('Upload is ' + progress + '% done');
       
       uploadMessage.html('<i class="fa fa-spinner fa-pulse"></i> <span>' + progress + '%</span>');
 
       switch (snapshot.state) {
       case firebase.storage.TaskState.PAUSED: // or 'paused'
-        console.log('Upload is paused');
+        console.info('Upload is paused');
         break;
       case firebase.storage.TaskState.RUNNING: // or 'running'
-        console.log('Upload is running');
+        console.info('Upload is running');
         break;
       }
     }, function(error) {
@@ -51,11 +51,11 @@ $(document).ready(function() {
       // Handle successful uploads on complete
       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       var downloadURL = uploadTask.snapshot.downloadURL;
-      console.log('subió imagen');
+      console.info('subió imagen');
       uploadMessage.addClass('text-success');
       uploadMessage.html('<i class="fa fa-check" aria-hidden="true"></i> <span>100%</span>');
       
-      console.log(downloadURL);
+      console.info(downloadURL);
       imageUrl = downloadURL;
     });
   }
@@ -73,7 +73,7 @@ $(document).ready(function() {
   }
   
   function sharePost() {
-    console.log($textArea.val());
+    console.info($textArea.val());
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         if ($textArea.val() !== ' ' || $file.val()) {
@@ -87,7 +87,7 @@ $(document).ready(function() {
           uploadMessage.removeClass('text-success');
           uploadMessage.html('');
   
-          // console.log(uid);
+          // console.info(uid);
           var newPost = {
             name: user.displayName,
             message: $textArea.val(),
@@ -97,7 +97,6 @@ $(document).ready(function() {
   
           firebase.database().ref('posts/').push(newPost);
         }
-
       }
       $textArea.val('');
       $file.val('');
@@ -113,7 +112,7 @@ $(document).ready(function() {
     var idPost = element.uid;
     
     if (imagePost !== undefined && imagePost !== null) {
-      console.log(imagePost);
+      console.info(imagePost);
       htmlPost = '<div id="' + idPost + '" class="card del-post mt-3"><div class="card-header bg-yellowLab white-text"><small>Publicado por</small> <span>' + namePost + '</span> <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div id="' + idPost + '"class="card-body"><p class="card-text">' + messagePost + '</p><div class="new-post rounded-corners"><img class="w-100" src="' + imagePost + '"></div></div><div class="card-footer"><button class="btn btn-secondary like-btn rounded-corners"><i class="fa fa-heart-o" aria-hidden="true"></i></button><button class="btn btn-secondary rounded-corners ml-2"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button></div></div>';
     } else {
       htmlPost = '<div id="' + idPost + '" class="card del-post mt-3"><div class="card-header bg-yellowLab white-text"><small>Publicado por</small> <span>' + namePost + '</span> <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div id="' + idPost + '"class="card-body"><p class="card-text">' + messagePost + '</p></div><div class="card-footer"><button class="btn btn-secondary like-btn rounded-corners"><i class="fa fa-heart-o" aria-hidden="true"></i></button><button class="btn btn-secondary rounded-corners ml-2"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button></div></div>';
@@ -123,13 +122,13 @@ $(document).ready(function() {
   });
 
   $(document).on('click', '.like-btn', function() {
-    console.log('click success!');
+    console.info('click success!');
 
     $(this).toggleClass('btn-danger').toggleClass('btn-secondary');
   }); 
 
   $(document).on('click', '.close', function() {
-    console.log('close-click');
+    console.info('close-click');
     $(this).parent().parent().remove();
   });
 });
