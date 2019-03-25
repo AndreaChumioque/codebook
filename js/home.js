@@ -1,12 +1,14 @@
 $(document).ready(function() {
   // Declarando variables
+  var $auth = firebase.auth();
+
   var $textArea = $('#write-posts');
   var $postBtn = $('#posts-btn');
   var $postsContainer = $('#posts-container');
   var uploadMessage = $('#upload-msg');
   var $file = $('#file');
   var postsRef = firebase.database().ref('posts');
-  var postedImagesRef = firebase.database().ref().child('postedImages');
+  // var postedImagesRef = firebase.database().ref().child('postedImages');
   var imageUrl = null;
 
   // Asociando eventos
@@ -63,29 +65,27 @@ $(document).ready(function() {
   }
   
   function sharePost() {
-    console.info($textArea.val());
-    firebase.auth().onAuthStateChanged(function(user) {
+    $auth.onAuthStateChanged(function(user) {
       if (user) {
         if ($textArea.val() !== ' ' || $file.val()) {
           var name = user.displayName;
           var msg = $textArea.val();
           var uid = firebase.database().ref().child('posts').push().key;
 
-
           $textArea.focus();
           $postBtn.attr('disabled', true);
           uploadMessage.removeClass('text-success');
           uploadMessage.html('');
   
-          // console.info(uid);
           var newPost = {
-            name: user.displayName,
-            message: $textArea.val(),
+            authorUid: user.uid,
+            name,
+            message: msg,
             image: imageUrl,
             uid: uid
           };
   
-          firebase.database().ref('posts/').push(newPost);
+          var newPostRef = firebase.database().ref('posts/').push(newPost);
         }
       }
       $textArea.val('');
@@ -94,18 +94,63 @@ $(document).ready(function() {
   }
 
   postsRef.on('child_added', function(snapshot) {
+    console.log(snapshot.key);
     var htmlPost = '';
     var element = snapshot.val();
     var namePost = element.name;
     var messagePost = element.message;
     var imagePost = element.image;
-    var idPost = element.uid;
-    
+    var idPost = snapshot.key;
+    var user = $auth.currentUser;
+    var postHeader = element.authorUid === user.uid
+      ? `
+      <div class="card-header bg-yellowLab white-text">
+        <small>Publicado por</small> <span>${namePost}</span>
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      ` : `
+      <div class="card-header bg-yellowLab white-text">
+        <small>Publicado por</small> <span>${namePost}</span>
+      </div>
+      `;
     if (imagePost !== undefined && imagePost !== null) {
       console.info(imagePost);
-      htmlPost = '<div id="' + idPost + '" class="card del-post mt-3"><div class="card-header bg-yellowLab white-text"><small>Publicado por</small> <span>' + namePost + '</span> <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div id="' + idPost + '"class="card-body"><p class="card-text">' + messagePost + '</p><div class="new-post rounded-corners"><img class="w-100" src="' + imagePost + '"></div></div><div class="card-footer"><button class="btn btn-secondary like-btn rounded-corners"><i class="fa fa-heart-o" aria-hidden="true"></i></button><button class="btn btn-secondary rounded-corners ml-2"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button></div></div>';
+      htmlPost = `
+      <div id="${idPost}" class="card mt-3">
+        ${postHeader}
+        <div id="${idPost}" class="card-body">
+          <p class="card-text">${messagePost}</p>
+          <div class="new-post rounded-corners">
+            <img class="w-100" src="${imagePost}">
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary like-btn rounded-corners">
+            <i class="fa fa-heart-o" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-secondary rounded-corners ml-2">
+            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>`;
     } else {
-      htmlPost = '<div id="' + idPost + '" class="card del-post mt-3"><div class="card-header bg-yellowLab white-text"><small>Publicado por</small> <span>' + namePost + '</span> <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div id="' + idPost + '"class="card-body"><p class="card-text">' + messagePost + '</p></div><div class="card-footer"><button class="btn btn-secondary like-btn rounded-corners"><i class="fa fa-heart-o" aria-hidden="true"></i></button><button class="btn btn-secondary rounded-corners ml-2"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button></div></div>';
+      htmlPost = `
+      <div id="${idPost}" class="card del-post mt-3">
+        ${postHeader}
+        <div id="${idPost}" class="card-body">
+          <p class="card-text">${messagePost}</p>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary like-btn rounded-corners">
+            <i class="fa fa-heart-o" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-secondary rounded-corners ml-2">
+            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>`;
     }
 
     $postsContainer.prepend(htmlPost);
@@ -117,8 +162,9 @@ $(document).ready(function() {
     $(this).toggleClass('btn-danger').toggleClass('btn-secondary');
   }); 
 
-  $(document).on('click', '.close', function() {
-    console.info('close-click');
-    $(this).parent().parent().remove();
+  $(document).on('click', '.close', function(event) {
+    var $post = $(event.target.closest('.card'));
+    var uid = $post.attr('id');
+    postsRef.child(uid).remove();
   });
 });
