@@ -1,6 +1,5 @@
 $(document).ready(function() {
   // Declarando variables
-  var $signOutBtn = $('#sign-out');
   var $textArea = $('#write-posts');
   var $postBtn = $('#posts-btn');
   var $postsContainer = $('#posts-container');
@@ -26,36 +25,27 @@ $(document).ready(function() {
   // Agregar una imagen a Firebase Storage
   function selectImage(event) {
     var selectedFile = $(event.target).get(0).files[0];
-    console.info(selectedFile.name);
 
     var storageRef = firebase.storage().ref('postedImages/' + selectedFile.name);
     var uploadTask = storageRef.put(selectedFile);
 
     uploadTask.on('state_changed', function(snapshot) {
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.info('Upload is ' + progress + '% done');
-      
-      uploadMessage.html('<i class="fa fa-spinner fa-pulse"></i> <span>' + progress + '%</span>');
-
-      switch (snapshot.state) {
-      case firebase.storage.TaskState.PAUSED: // or 'paused'
-        console.info('Upload is paused');
-        break;
-      case firebase.storage.TaskState.RUNNING: // or 'running'
-        console.info('Upload is running');
-        break;
+      var progress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+      if (progress < 100) {
+        uploadMessage.removeClass('text-success');
       }
+      uploadMessage.html('<i class="fa fa-spinner fa-pulse"></i> <span>' + progress + '%</span>');
     }, function(error) {
+      console.error(error);
       // Handle unsuccessful uploads
     }, function() {
       // Handle successful uploads on complete
-      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       var downloadURL = uploadTask.snapshot.downloadURL;
-      console.info('subió imagen');
+      var $loadedImage = $('#loaded-image');
+      $loadedImage.html(`<img src="${downloadURL}" alt="${selectedFile.name}"/>`);
       uploadMessage.addClass('text-success');
       uploadMessage.html('<i class="fa fa-check" aria-hidden="true"></i> <span>100%</span>');
       
-      console.info(downloadURL);
       imageUrl = downloadURL;
     });
   }

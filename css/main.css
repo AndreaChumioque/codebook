@@ -130,6 +130,14 @@ footer a:hover {
   background-repeat: repeat-y;
 }
 
+#loaded-image {
+  width: 200px;
+}
+
+#loaded-image img {
+  width: 100%;
+}
+
 .carousel-container {
   background-color: var(--grayLab);
   margin-top: 56px;
