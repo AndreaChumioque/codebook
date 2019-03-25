@@ -1,0 +1,30 @@
+{
+  "name": "codebook",
+  "version": "1.0.0",
+  "description": "Propuesta de red social enfocada a exalumnas de Laboratoria",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreaChumioque/codebook.git"
+  },
+  "keywords": [
+    "codebook",
+    "laboratoria",
+    "social",
+    "red",
+    "alumni"
+  ],
+  "author": "Andrea Chumioque, Lucero Hospina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndreaChumioque/codebook/issues"
+  },
+  "homepage": "https://github.com/AndreaChumioque/codebook#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

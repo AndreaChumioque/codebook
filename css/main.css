@@ -84,8 +84,13 @@
 #reg-header {
   background-image: url('../assets/images/bottom-img.svg');
   background-size: cover;
-  background-position: center bottom;
+  background-position: center right;
   height: 30vh;
+  background-repeat: no-repeat;
+}
+
+#reg-header figure {
+  max-width: 300px;
 }
 
 footer {
@@ -298,6 +303,11 @@ iframe {
 @media(min-width: 768px) {
   #welcome-image, #login-content {
     height: 100vh;
+  }
+
+  #reg-header {
+    background-size: contain;
+    background-position: center;
   }
 
   /* .moment-custom {
