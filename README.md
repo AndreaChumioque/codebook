@@ -2,13 +2,13 @@
 
 Codebook es la red de egresadas de Laboratoria, creada para que nuestras usuarias pueden mantenerse en contacto y compartir las últimas tendencias en tecnología.
 
-![Codebook](https://fotos.subefotos.com/728f27bb5479569e1339057f48295bf8o.png)
+![Codebook](https://fotos.subefotos.com/99a7f99169eeaf86476cf75b0eb2460eo.png)
 
 ## Desarrollado para [Laboratoria](http://laboratoria.la) 
 
 ## Crea tu Propia Red Social
 
-Para este proyecto se nos solicitó que desarrollemos una red social de nuestra preferencia empleando los conocimientos adquiridos hasta ahora en el bootcamp de Laboratoria-Lima.
+Para este proyecto se nos solicitó que desarrollemos una red social empleando los conocimientos adquiridos hasta ahora en el bootcamp de Laboratoria-Lima.
 
 ## Flujo de trabajo
 
@@ -32,7 +32,7 @@ A continuación, las vistas del producto entregado, las cuales se desarrollaron 
 
 ![Sin titulo](assets/docs/login-view.JPG)
 
-![Sin titulo](assets/docs/home-desktop.png)
+![Sin titulo](assets/docs/home-desktop.PNG)
 
 ![Sin titulo](assets/docs/profile-mobile.png)
 
