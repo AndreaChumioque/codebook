@@ -93,14 +93,13 @@ $(document).ready(function() {
     });
   }
 
-  postsRef.on('child_added', function(snapshot) {
-    console.log(snapshot.key);
+  function addNewPost(post) {
     var htmlPost = '';
-    var element = snapshot.val();
+    var element = post.val();
     var namePost = element.name;
     var messagePost = element.message;
     var imagePost = element.image;
-    var idPost = snapshot.key;
+    var idPost = post.key;
     var user = $auth.currentUser;
     var postHeader = element.authorUid === user.uid
       ? `
@@ -154,6 +153,21 @@ $(document).ready(function() {
     }
 
     $postsContainer.prepend(htmlPost);
+  }
+
+  function removePost(post) {
+    var idPost = post.key;
+    var $post = $(`#${idPost}`);
+    $post.remove();
+  }
+
+  postsRef.on('child_added', function(snapshot) {
+    // console.log(snapshot.key);
+    addNewPost(snapshot);
+  });
+
+  postsRef.on('child_removed', function(snapshot) {
+    removePost(snapshot);
   });
 
   $(document).on('click', '.like-btn', function() {
