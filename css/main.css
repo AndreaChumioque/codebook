@@ -8,7 +8,6 @@
   font-family: 'Nunito', sans-serif;
 }
 
-
 /* SPLASH */
 #splash {
   background: linear-gradient(to bottom right, #ffd11b, #ff8400);
@@ -130,6 +129,10 @@ footer a:hover {
   background-repeat: repeat-y;
 }
 
+#file-label i {
+  font-size: 1.25rem;
+}
+
 #loaded-image {
   width: 200px;
 }
@@ -161,12 +164,14 @@ iframe {
   resize: none;
 }
 
-.close {
+.remove-post {
   color: #fff;
+  padding: 0;
+  transition: .25s;
 }
 
-.close:hover {
-  color: #fff;
+.remove-post:hover {
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .jumbo-style {

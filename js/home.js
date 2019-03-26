@@ -8,7 +8,6 @@ $(document).ready(function() {
   var uploadMessage = $('#upload-msg');
   var $file = $('#file');
   var postsRef = firebase.database().ref('posts');
-  // var postedImagesRef = firebase.database().ref().child('postedImages');
   var imageUrl = null;
 
   // Asociando eventos
@@ -36,7 +35,7 @@ $(document).ready(function() {
       if (progress < 100) {
         uploadMessage.removeClass('text-success');
       }
-      uploadMessage.html('<i class="fa fa-spinner fa-pulse"></i> <span>' + progress + '%</span>');
+      uploadMessage.html('<i class="fas fa-spinner fa-pulse"></i> <span>' + progress + '%</span>');
     }, function(error) {
       console.error(error);
       // Handle unsuccessful uploads
@@ -46,7 +45,7 @@ $(document).ready(function() {
       var $loadedImage = $('#loaded-image');
       $loadedImage.html(`<img src="${downloadURL}" alt="${selectedFile.name}"/>`);
       uploadMessage.addClass('text-success');
-      uploadMessage.html('<i class="fa fa-check" aria-hidden="true"></i> <span>100%</span>');
+      uploadMessage.html('<i class="fas fa-check"></i> <span>100%</span>');
       
       imageUrl = downloadURL;
     });
@@ -93,7 +92,8 @@ $(document).ready(function() {
     });
   }
 
-  function addNewPost(post) {
+  // Agregar post a feed
+  function renderNewPost(post) {
     var htmlPost = '';
     var element = post.val();
     var namePost = element.name;
@@ -105,8 +105,8 @@ $(document).ready(function() {
       ? `
       <div class="card-header bg-yellowLab white-text">
         <small>Publicado por</small> <span>${namePost}</span>
-        <button type="button" class="close" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn remove-post float-right" aria-label="Close">
+          <i class="far fa-trash-alt"></i>
         </button>
       </div>
       ` : `
@@ -127,10 +127,7 @@ $(document).ready(function() {
         </div>
         <div class="card-footer">
           <button class="btn btn-secondary like-btn rounded-corners">
-            <i class="fa fa-heart-o" aria-hidden="true"></i>
-          </button>
-          <button class="btn btn-secondary rounded-corners ml-2">
-            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+            <i class="far fa-heart align-middle"></i>
           </button>
         </div>
       </div>`;
@@ -143,10 +140,7 @@ $(document).ready(function() {
         </div>
         <div class="card-footer">
           <button class="btn btn-secondary like-btn rounded-corners">
-            <i class="fa fa-heart-o" aria-hidden="true"></i>
-          </button>
-          <button class="btn btn-secondary rounded-corners ml-2">
-            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+            <i class="far fa-heart align-middle"></i>
           </button>
         </div>
       </div>`;
@@ -155,30 +149,33 @@ $(document).ready(function() {
     $postsContainer.prepend(htmlPost);
   }
 
+  // Click botón remover post
+  $(document).on('click', '.remove-post', function(event) {
+    var $post = $(event.target.closest('.card'));
+    var uid = $post.attr('id');
+    postsRef.child(uid).remove();
+  });
+
+  // Remover post de feed
   function removePost(post) {
     var idPost = post.key;
     var $post = $(`#${idPost}`);
     $post.remove();
   }
-
+  
+  // Eventos child ref posts firebase database
   postsRef.on('child_added', function(snapshot) {
-    // console.log(snapshot.key);
-    addNewPost(snapshot);
+    renderNewPost(snapshot);
   });
 
   postsRef.on('child_removed', function(snapshot) {
     removePost(snapshot);
   });
 
+  // Click botón like
   $(document).on('click', '.like-btn', function() {
     console.info('click success!');
 
     $(this).toggleClass('btn-danger').toggleClass('btn-secondary');
   }); 
-
-  $(document).on('click', '.close', function(event) {
-    var $post = $(event.target.closest('.card'));
-    var uid = $post.attr('id');
-    postsRef.child(uid).remove();
-  });
 });
